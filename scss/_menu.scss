@@ -1,0 +1,132 @@
+@use "config";
+
+// we want it in top right corner
+.menu-btn {
+  position: absolute;
+  z-index: 1;
+  right: 1rem;
+  top: 1rem;
+  height: 20px;
+  width: 28px;
+  cursor: pointer;
+  @include config.transition-ease;
+
+  &__burger {
+    position: absolute;
+    right: 0;
+    top: 0.5rem;
+    width: 28px;
+    height: 3px;
+    background-color: config.set-text-color(config.$primary-color);
+    @include config.transition-ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      width: 28px;
+      height: 3px;
+      background-color: config.set-text-color(config.$primary-color);
+      @include config.transition-ease;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      width: 20px;
+      height: 3px;
+      background-color: config.set-text-color(config.$primary-color);
+      @include config.transition-ease;
+    }
+
+    // if we had here class without parent: .open, i would result to separate child: menu-btn__burger .open
+    &.open { // result to: .menu-btn__burger.open
+      transform: rotate(720deg);
+      background: transparent;
+
+      &::before {
+        transform: rotate(45deg) translate(5px, 8px); // translate - moves item be: x,y
+      }
+
+      &::after {
+        width: 28px;
+        transform: rotate(-45deg) translate(3px, -7px); // translate - moves item be: x,y
+      }
+    }
+  }
+}
+
+/*
+display:none means that the tag will not appear on the page at all (although you can still interact with it through the dom).
+There will be no space allocated for it between the other tags.
+
+visibility:hidden means that unlike display:none, the tag is not visible, but space is allocated for it on the page.
+The tag is rendered, it just isn't seen on the page.
+*/
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  opacity: 0.98;
+  visibility: hidden;
+
+  &.open {
+    visibility: visible;
+  }
+
+  .menu-nav {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+    overflow: hidden;
+    background: config.$primary-color;
+    list-style-type: none; // form of ul bullets
+    padding-right: 1rem;
+    transform: translateY(-100%); // position of the menu will start out of the page (on top)
+    @include config.transition-ease;
+
+    &.open {
+      transform: translateY(0); // menu will come out fom the top
+    }
+
+    &__item {
+      transform: translateX(100vw);
+      padding: 2rem 0;
+      @include config.transition-ease;
+
+      &.open {
+        transform: translateX(0); // will bring item in from the right
+      }
+
+      &.active > a {
+        color: config.$secondary-color;
+      }
+    }
+
+    &__link {
+      font-size: 2rem;
+      text-transform: uppercase;
+      font-weight: 300;
+      @include config.transition-ease;
+
+      &:hover {
+
+      }
+    }
+  }
+}
+
+// For loop iteration through 4 links
+// with declared variable: $i, where it will take dynamic value from 1, 2, 3, 4
+// and we target: menu-nav__item:nth-child()
+@for $i from 1 through 4 {
+  .menu-nav__item:nth-child(#{$i}) {
+    transition-delay: ($i * 0.1s) + 0.15s;
+  }
+}
+

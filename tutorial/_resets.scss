@@ -1,0 +1,13 @@
+// Partials - Files with little snippets of CSS that you can include in other Sass files. Way to modularize your CSS.
+
+// A partial is a Sass file named with a leading underscore, like _partial.tutorial.
+// The underscore lets Sass know that the file is only a partial file and that it SHOULD NOT BE GENERATED INTO A CSS file.
+
+// Sass partials are used with the @use rule: it loads another Sass file as a module,
+// which means you can refer to its variables, mixins, and functions in your Sass file with a namespace based on the filename
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

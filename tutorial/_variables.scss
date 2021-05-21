@@ -1,0 +1,17 @@
+// variables
+// while compiling to .css, it doesn't create a separate var, but directly assigns value to css property
+$primary-color: black;
+$accent-color: red;
+$text-color: white;
+
+$mobile: 800px;
+
+// maps
+$font-weights: (
+        "regular": 400,
+        "medium": 500,
+        "bold": 700,
+);
+
+// get single value from map: we pass map itself as 1-st param and and key as 2-nd
+// font-weight: map-get($font-weights, bold);

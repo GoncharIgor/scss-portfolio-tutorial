@@ -1,0 +1,138 @@
+// the import below is treated as the whole part of this file:
+// We don't need to export explicitly inner vars, we just can reference them directly as if they were declared in this file
+// @import - tutorial extends native .css @import
+// will be deprecated, because it:
+// - makes all variables, mixins, and functions globally accessible
+// - @extend rules are also global, which makes it difficult to predict which style rules will be extended.
+// - performance: each stylesheet is executed and its CSS emitted every time it’s @imported.
+// This method causes the browser to load each CSS file sequentially, rather than in parallel. Since CSS is render-blocking, by default, this is likely to affect page performance.
+// -there was no way to define private members or placeholder selectors that were inaccessible to downstream stylesheets
+@import "./resets";
+@import "./variables";
+
+
+// MODULES
+//  Stylesheets loaded by @use are called "modules".
+//  Sass also provides built-in modules full of useful functions. E.g: @use "sass:color";
+
+
+// FUNCTIONS
+// 1. benefit of functions - their returned values may be applied to different properties
+// mixins, even with passed params, have inside defined list of properties
+// 2. Mixin should define styles. Functions - should return values
+@function get-weight-function($weight-name) {
+  @return map-get($font-weights, $weight-name)
+}
+
+// MIXIN
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+// BOOLEANS + IF statements
+// boolean var with default value
+@mixin theme($light-theme: true) {
+  @if $light-theme {
+    background-color: lighten($primary-color, 100%);
+    color: darken($text-color, 100%);
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    // this content wil be passed when mixin is called
+    @content;
+  }
+}
+
+body {
+  background-color: $primary-color;
+  color: $text-color;
+}
+
+// maps with for-each
+$tile-colors: (
+        "white-color": white,
+        "red-color": red,
+        "blue-color": blue
+);
+
+@each $tag, $tag-color in $tile-colors {
+  .#{$tag} {
+    border-top: 4px solid $tag-color;
+  }
+}
+
+/*
+outputs for each key in map:
+
+.white-color {
+  border-top: 4px solid white;
+}
+*/
+
+
+// nesting
+
+.main {
+  @include flexCenter(row);
+  width: 80%;
+  margin: 0 auto;
+
+  // is the same as: .main__paragraph
+  // "&" - equals the parent
+  // so, result will be NOT: .main.main__paragraph, BUT will be: .main__paragraph
+  &__paragraph-1 {
+    font-weight: map-get($font-weights, bold);
+
+    // wil result: .main__paragraph-1:hover
+    &:hover {
+      color: pink;
+    }
+
+  }
+}
+
+// INTERPOLATION: #{&}
+.main {
+  width: 80%;
+
+  // #{&} - means we don't want only parent (.main), but we want ALL before
+  // will result: .main .main__paragraph-2
+  #{&}__paragraph-2 {
+    font-weight: get-weight-function(regular);
+  }
+
+  // EXTEND, like class extension
+  #{&}__paragraph-4 {
+    @extend .main__paragraph-1;
+
+    // but here we override hover, that is present in .main__paragraph-1
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  @include mobile {
+    // this will be used as @content inside mixin
+    flex-direction: column;
+  }
+}
+
+
+.light {
+  @include theme($light-theme: true); // is the same as: theme(true)
+  // if false is set, then .light class even will not be compiled, because .light{} will be empty
+}
+
+
+// OPERATIONS
+// in order to use math, in .css we had to use calc() f():
+// width: calc(100% - 40%);
+// or with mixed types:
+// width: calc(100% - 40px);
+// in .tutorial we don't need to use this f(), but we can't mix types (% with px)
+// width: 100% - 40%

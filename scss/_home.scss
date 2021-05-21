@@ -1,0 +1,30 @@
+@use "config";
+
+.home {
+  height: 100%;
+  padding-top: 40vh;
+  overflow: hidden; // no scrollbars on home page
+  align-items: center;
+  text-align: center;
+
+  // making image darker
+  background: linear-gradient(
+                  to right,
+                  rgba(config.$primary-color, 0.9),
+                  rgba(config.$primary-color, 0.3)
+  ),
+  url('../img/model-1.jpeg') center top;
+  background-size: cover;
+
+  &__name { // the same as: .home__name
+    font-size: 5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid config.set-text-color(config.$primary-color);;
+
+    &--last { // the same as: .home__name--last
+      color: config.$secondary-color;
+      font-weight: 700;
+    }
+  }
+}

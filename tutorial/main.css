@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: black;
+  color: white;
+}
+
+.white-color {
+  border-top: 4px solid white;
+}
+
+.red-color {
+  border-top: 4px solid red;
+}
+
+.blue-color {
+  border-top: 4px solid blue;
+}
+
+/*
+outputs for each key in map:
+
+.white-color {
+  border-top: 4px solid white;
+}
+*/
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 80%;
+  margin: 0 auto;
+}
+.main__paragraph-1, .main .main__paragraph-4 {
+  font-weight: 700;
+}
+.main__paragraph-1:hover, .main .main__paragraph-4:hover {
+  color: pink;
+}
+
+.main {
+  width: 80%;
+}
+.main .main__paragraph-2 {
+  font-weight: 400;
+}
+.main .main__paragraph-4:hover {
+  color: red;
+}
+@media (max-width: 800px) {
+  .main {
+    flex-direction: column;
+  }
+}
+
+.light {
+  background-color: white;
+  color: black;
+}
+
+/*# sourceMappingURL=main.css.map */
